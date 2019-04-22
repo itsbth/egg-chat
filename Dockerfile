@@ -1,4 +1,4 @@
-FROM node AS builder
+FROM node:10.15.3 AS builder
 RUN mkdir /app
 WORKDIR /app
 COPY package.json /app
@@ -7,7 +7,7 @@ RUN yarn install --frozen-lockfile
 COPY . /app
 RUN yarn build
 
-FROM node
+FROM node:10.15.3
 
 RUN mkdir /app
 WORKDIR /app
