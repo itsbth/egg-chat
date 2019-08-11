@@ -12,7 +12,7 @@ app.get("/chat", async (req, res) => {
     Connection: "keep-alive"
   });
   res.write("\n");
-  const rid = parseInt(req.headers['last-event-id'] || 0, 10)
+  const rid = parseInt(req.headers["last-event-id"] || 0, 10);
   for (let i = rid; i < rid + 10; i++) {
     res.write(`id: ${i}\r\n`);
     // res.write(`event: message\n`);
@@ -22,4 +22,7 @@ app.get("/chat", async (req, res) => {
   res.end();
 });
 
-app.listen(process.env.PORT || 3000);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
