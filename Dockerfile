@@ -16,5 +16,6 @@ COPY yarn.lock /app
 RUN yarn install --production --frozen-lockfile
 COPY . /app
 COPY --from=builder /app/dist /app/dist
-EXPOSE 3000
+EXPOSE 5000
+ENV PORT 5000
 CMD yarn start
