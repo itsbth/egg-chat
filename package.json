@@ -12,6 +12,8 @@
     "test": "echo no issues here"
   },
   "devDependencies": {
+    "@types/react": "^16.9.1",
+    "@types/react-dom": "^16.8.5",
     "concurrently": "^4.1.1",
     "eslint": "^5.16.0",
     "nodemon": "^1.19.1",
