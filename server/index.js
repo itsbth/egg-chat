@@ -6,8 +6,6 @@ const uuidv4 = require("uuid/v4");
 const app = express();
 const _wsApp = ws(app);
 
-const delay = ms => new Promise(res => setTimeout(res, ms));
-
 app.use(bp.json());
 app.use(express.static("dist/"));
 
