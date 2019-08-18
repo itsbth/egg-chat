@@ -4,7 +4,7 @@ const bp = require("body-parser");
 const jwt = require("jsonwebtoken");
 const uuidv4 = require("uuid/v4");
 const app = express();
-const wsApp = ws(app);
+const _wsApp = ws(app);
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -49,10 +49,12 @@ app.ws("/chat", (wss, req) => {
       payload: data
     });
     for (const [sock, state] of clients.entries()) {
-      sock.send(message);
+      if (state.state === "ready") sock.send(message);
     }
   });
-  wss.on("close");
+  wss.on("close", () => {
+    clients.delete(wss);
+  });
 });
 
 const PORT = process.env.PORT || 3000;
