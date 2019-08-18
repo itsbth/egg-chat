@@ -1,25 +1,58 @@
 const express = require("express");
+const ws = require("express-ws");
+const bp = require("body-parser");
+const jwt = require("jsonwebtoken");
+const uuidv4 = require("uuid/v4");
 const app = express();
+const wsApp = ws(app);
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
+app.use(bp.json());
 app.use(express.static("dist/"));
 
-app.get("/chat", async (req, res) => {
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache",
-    Connection: "keep-alive"
+const clients = new Map();
+
+app.post("/token", (req, res) => {
+  const user = {
+    nick: req.body.nick || "Anonymous Coward",
+    uuid: uuidv4()
+  };
+  res.json({
+    status: "ok",
+    token: jwt.sign(user, process.env.JWT_KEY)
   });
-  res.write("\n");
-  const rid = parseInt(req.headers["last-event-id"] || 0, 10);
-  for (let i = rid; i < rid + 10; i++) {
-    res.write(`id: ${i}\r\n`);
-    // res.write(`event: message\n`);
-    res.write(`data: message #${i}\r\n\r\n`);
-    await delay(1000);
-  }
-  res.end();
+});
+
+app.ws("/chat", (wss, req) => {
+  const state = {
+    nick: undefined,
+    state: "init",
+    user: null
+  };
+  clients.set(wss, state);
+  wss.on("message", msg => {
+    const data = JSON.parse(msg);
+    if (state.state !== "ready") {
+      if (!data.type === "auth") {
+        wss.close();
+      }
+      const user = jwt.verify(data.token, process.env.JWT_KEY);
+      state.user = user;
+      state.state = "ready";
+      wss.send(JSON.stringify({ status: "auth-ok" }));
+      return;
+    }
+    const message = JSON.stringify({
+      type: "message",
+      user: state.user,
+      payload: data
+    });
+    for (const [sock, state] of clients.entries()) {
+      sock.send(message);
+    }
+  });
+  wss.on("close");
 });
 
 const PORT = process.env.PORT || 3000;

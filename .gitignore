@@ -68,3 +68,5 @@ dist/
 
 # WebStorm (TODO: Move to global)
 .idea/
+
+.env
