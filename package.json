@@ -22,7 +22,7 @@
     "nodemon": "^1.19.1",
     "parcel": "^1.12.3",
     "prettier": "^1.18.2",
-    "ts-node": "^8.3.0",
+    "ts-node": "^8.6.2",
     "typescript": "^3.6.2"
   },
   "dependencies": {
