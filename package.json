@@ -17,7 +17,7 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "concurrently": "^5.0.2",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.3.0",
     "nodemon": "^1.19.1",
     "parcel": "^1.12.4",
