@@ -12,7 +12,7 @@
     "test": "echo no issues here"
   },
   "devDependencies": {
-    "@types/react": "^16.9.2",
+    "@types/react": "^17.0.2",
     "@types/react-dom": "^16.9.5",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
